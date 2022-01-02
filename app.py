@@ -35,6 +35,28 @@ def rf_sender(code):
     os.system("./codesend " + code)  # to make sure it worked
 
 
+def multiSwitchSwitcher(switch, value):
+    """
+    Some switches (RF codes) control several devices. Changen Status of Hardcoded devices to account for that.
+    :param value: value of command (OFF;ON)
+    :param switch: MultiSwitches which control several devices
+    """
+    if value == "ON":
+        if switch.num == 5:
+            Switch_list[1].enabled = True
+            Switch_list[2].enabled = True
+            Switch_list[3].enabled = True
+            Switch_list[4].enabled = True
+    elif value == "OFF":
+        if switch.num == 5:
+            Switch_list[1].enabled = False
+            Switch_list[4].enabled = False
+            Switch_list[3].enabled = False
+            Switch_list[2].enabled = False
+
+
+
+
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -46,12 +68,14 @@ def index():
             for key, value in request_dic.items():
                 switch = find_switch(key)
                 if value == "ON":
+                    multiSwitchSwitcher(switch, value)  # used to switch several devices TODO fix hardcode
                     switch.enabled = True
                     app.logger.info(f'{switch.num}: {switch.name}: turned on')
 
                     #  print(f'{switch.num}: {switch.name}: turned on')
                     rf_sender(switch.code_on)
                 elif value == "OFF":
+                    multiSwitchSwitcher(switch, value)
                     switch.enabled = False
                     app.logger.info(f'{switch.num}: {switch.name}: turned off')
                     # print(f'{switch.num}: {switch.name}: turned off')
