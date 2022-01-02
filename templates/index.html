@@ -1,0 +1,27 @@
+<!doctype html>
+<link rel="stylesheet" href="../static/index.css">
+<link rel="icon" type="image/x-icon" href="../static/favicon.ico">
+<title>Lichter</title>
+
+
+<h1>Lichter</h1>
+<form method="post" action="/">
+    <table>
+        {% for switch in switches %}
+            <tr>
+                <td class="bulb">
+                    {% if switch.enabled %}<img src="../static/bulb_on.svg"/>{% elif not switch.enabled %}
+                        <img src="../static/bulb_off.svg"/>{% endif %}
+                </td>
+                <td class="text">
+                    {{ switch.id }} {{ switch.name }}
+                </td>
+                <td class="button">
+                    <input type="submit" id="on" value="ON" name="{{ switch.num }}"/>
+                    <input type="submit" id="off" value="OFF" name="{{ switch.num }}"/>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</form>
+</html>

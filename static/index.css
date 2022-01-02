@@ -1,0 +1,132 @@
+
+body {
+    background-color: #111217;
+    font-family: Roboto;
+    color: white;
+}
+
+h1 {
+    font-size: 7vw;
+    margin: auto;
+    width: 60%;
+    text-align: center;
+}
+
+#on {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    /*padding: 15px 32px;*/
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+img {
+    width: 100%;
+    max-width: 10vw;
+    height: auto;
+}
+
+tr {
+    padding: 50px;
+    background-color: #181b1f;
+    color: white;
+}
+
+.text {
+    flex: max-content;
+    font-size: 6vw;
+    text-align: left;
+    padding: 0 10px 0 25px;
+}
+
+@media screen and (min-width: 1000px) {
+    .text {
+        font-size: 30px !important;
+        width: 1%;
+        white-space: nowrap;
+        padding: 0 10px 0 25px;
+    }
+        .bulb {
+        width: 3vw !important;
+        padding: 5px
+    }
+            table {
+        width: 540px;
+                    margin: auto;
+
+    }
+            h1{
+                font-size: 40px;
+            }
+}
+
+
+
+.bulb {
+    width: 10vw;
+    padding: 5px
+}
+
+
+#on, #off {
+    background-color: #13aa52;
+    border: 1px solid #13aa52;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    outline: none;
+    outline: 0;
+    padding: 10px 25px;
+    text-align: center;
+    transform: translateY(0);
+    transition: transform 150ms, box-shadow 150ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+#on:hover, #off:hover {
+    box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 1000px) {
+    table {
+        width: 100%
+    }
+
+    #on, #off {
+        padding: 10px 30px;
+        font-size: 4vw;
+
+    }
+
+    #on {
+        margin-left: 20px;
+        margin-right: 10px;
+    }
+
+    #off {
+        margin-left: 10px;
+    }
+
+}
+
+#on {
+    margin-left: 20px;
+}
+
+
+#off {
+    background-color: rgb(172, 15, 15) !important;
+    border: 1px solid rgba(172, 15, 15, 0.82) !important;
+}
+
