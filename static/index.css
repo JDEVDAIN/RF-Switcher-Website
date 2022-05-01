@@ -1,4 +1,7 @@
-
+@font-face {
+    font-family: Roboto;
+    src:url("./Roboto-Light.ttf");
+}
 body {
     background-color: #111217;
     font-family: Roboto;
@@ -21,6 +24,9 @@ h1 {
     text-decoration: none;
     display: inline-block;
     font-size: 12px;
+}
+.spacer{
+    height: 12px;
 }
 
 img {

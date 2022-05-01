@@ -18,50 +18,43 @@ app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
 
 Switch_list = [
-    Switch.Switch(1, "LED Schreibtisch", '7145473', '7145475'),
-    Switch.Switch(2,"Ecklampe","1361", "1364"),
-    Switch.Switch(3,"Tischlampe","4433", "4436"),
-    Switch.Switch(4, "Stehlampe", '11742167 4 355', '11559223 4 355'),
-    Switch.Switch(5, "Leuchtkugel", '11940012 4 355', '12494204 4 355'),
-    Switch.Switch(6, "Deckenfluter", '12494206 4 355', '11940014 4 355'),
-    Switch.Switch(7, "Alles", '11735922 4 355', '12052066 4 355')
+    [Switch.Switch(1, 1, "LED Schreibtisch", '7145473', '7145475'),
+     Switch.Switch(1, 2, "Ecklampe", "1361", "1364"),
+     Switch.Switch(1, 3, "Tischlampe", "4433", "4436")],
+    [Switch.Switch(2, 4, "Stehlampe", '11742167 4 355', '11559223 4 355'),
+     Switch.Switch(2, 5, "Leuchtkugel", '11940012 4 355', '12494204 4 355'),
+     Switch.Switch(2, 6, "Deckenfluter", '12494206 4 355', '11940014 4 355'),
+     Switch.Switch(2, 7, "Alles", '11735922 4 355', '12052066 4 355', True)]
 ]
 
 
 def find_switch(key):
-    for e in Switch_list:
-        if str(e.num) == key:
-            return e
+    for group_list in Switch_list:
+        for e in group_list:
+            if str(e.num) == key:
+                return e
     return None
 
 
 def rf_sender(code):
     # dev
-    #print("DEBUG: CODE SEND: " + code)
+    # print("DEBUG: CODE SEND: " + code)
     os.system("./codesend " + code)
     os.system("./codesend " + code)  # to make sure it worked
 
 
-def multiSwitchSwitcher(switch, value):
+def multi_switch_switcher(multi_switch, value):
     """
-    Some switches (RF codes) control several devices. Changen Status of Hardcoded devices to account for that.
+    Some switches (RF codes) control several devices. Changes Status of all group devices to account for that.
     :param value: value of command (OFF;ON)
-    :param switch: MultiSwitches which control several devices
+    :param multi_switch: MultiSwitches which control several devices
     """
-    if value == "ON":
-        if switch.num == 5:
-            Switch_list[1].enabled = True
-            Switch_list[2].enabled = True
-            Switch_list[3].enabled = True
-            Switch_list[4].enabled = True
-    elif value == "OFF":
-        if switch.num == 5:
-            Switch_list[1].enabled = False
-            Switch_list[2].enabled = False
-            Switch_list[3].enabled = False
-            Switch_list[4].enabled = False
-
-
+    for switch in Switch_list:
+        if switch.group == multi_switch.group:
+            if value == "ON":
+                switch.enabled = True
+            elif value == "OFF":
+                switch.enabled = False
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -75,14 +68,16 @@ def index():
             for key, value in request_dic.items():
                 switch = find_switch(key)
                 if value == "ON":
-                    multiSwitchSwitcher(switch, value)  # used to switch several devices TODO fix hardcode
+                    if switch.is_multi_switch:
+                        multi_switch_switcher(switch, value)
                     switch.enabled = True
                     app.logger.info(f'{switch.num}: {switch.name}: turned on')
 
                     #  print(f'{switch.num}: {switch.name}: turned on')
                     rf_sender(switch.code_on)
                 elif value == "OFF":
-                    multiSwitchSwitcher(switch, value)
+                    if switch.is_multi_switch:
+                        multi_switch_switcher(switch, value)
                     switch.enabled = False
                     app.logger.info(f'{switch.num}: {switch.name}: turned off')
                     # print(f'{switch.num}: {switch.name}: turned off')
