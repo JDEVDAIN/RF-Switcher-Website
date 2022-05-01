@@ -58,8 +58,28 @@ def multi_switch_switcher(multi_switch, value):
                     switch.enabled = False
 
 
+def kill_switch():
+    for group_list in Switch_list:
+        # find multi switch and activate to deactivate group instead of disabling all
+        # could be speed up; This iteration could be skipped if all multiswitches will get set at the end of a group
+        # depending on the hardware
+        for switch in group_list:
+            if switch.is_multi_switch:
+                multi_switch_switcher(switch, "OFF")
+                app.logger.info(f'{switch.num}: {switch.name}: turned off')
+                rf_sender(switch.code_off)
+                return
+        for switch in group_list:
+            app.logger.info(f'{switch.num}: {switch.name}: turned off')
+            switch.enabled = False
+            rf_sender(switch.code_off)
+
+
 def switcher(request_dic):
     for key, value in request_dic.items():
+        if value == "KILL":
+            kill_switch()
+            return
         switch = find_switch(key)
         if value == "ON":
             if switch.is_multi_switch:
