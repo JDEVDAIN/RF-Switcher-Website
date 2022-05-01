@@ -57,6 +57,25 @@ def multi_switch_switcher(multi_switch, value):
                 switch.enabled = False
 
 
+def switcher(request_dic):
+    for key, value in request_dic.items():
+        switch = find_switch(key)
+        if value == "ON":
+            if switch.is_multi_switch:
+                multi_switch_switcher(switch, value)
+            switch.enabled = True
+            app.logger.info(f'{switch.num}: {switch.name}: turned on')
+            #  print(f'{switch.num}: {switch.name}: turned on')
+            rf_sender(switch.code_on)
+        elif value == "OFF":
+            if switch.is_multi_switch:
+                multi_switch_switcher(switch, value)
+            switch.enabled = False
+            app.logger.info(f'{switch.num}: {switch.name}: turned off')
+            # print(f'{switch.num}: {switch.name}: turned off')
+            rf_sender(switch.code_off)
+
+
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -65,23 +84,7 @@ def index():
         if len(request_dic) <= 0:
             pass
         else:
-            for key, value in request_dic.items():
-                switch = find_switch(key)
-                if value == "ON":
-                    if switch.is_multi_switch:
-                        multi_switch_switcher(switch, value)
-                    switch.enabled = True
-                    app.logger.info(f'{switch.num}: {switch.name}: turned on')
-
-                    #  print(f'{switch.num}: {switch.name}: turned on')
-                    rf_sender(switch.code_on)
-                elif value == "OFF":
-                    if switch.is_multi_switch:
-                        multi_switch_switcher(switch, value)
-                    switch.enabled = False
-                    app.logger.info(f'{switch.num}: {switch.name}: turned off')
-                    # print(f'{switch.num}: {switch.name}: turned off')
-                    rf_sender(switch.code_off)
+            switcher(request_dic)
 
     elif request.method == 'GET':
         return render_template("index.html", switches=Switch_list, form=request.form)
