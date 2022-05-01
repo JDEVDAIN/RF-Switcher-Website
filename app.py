@@ -71,8 +71,9 @@ def kill_switch():
                 return
         for switch in group_list:
             app.logger.info(f'{switch.num}: {switch.name}: turned off')
-            switch.enabled = False
-            rf_sender(switch.code_off)
+            if switch.enabled:
+                switch.enabled = False
+                rf_sender(switch.code_off)
 
 
 def switcher(request_dic):
