@@ -49,12 +49,13 @@ def multi_switch_switcher(multi_switch, value):
     :param value: value of command (OFF;ON)
     :param multi_switch: MultiSwitches which control several devices
     """
-    for switch in Switch_list:
-        if switch.group == multi_switch.group:
-            if value == "ON":
-                switch.enabled = True
-            elif value == "OFF":
-                switch.enabled = False
+    for group_list in Switch_list:
+        for switch in group_list:
+            if switch.group == multi_switch.group:
+                if value == "ON":
+                    switch.enabled = True
+                elif value == "OFF":
+                    switch.enabled = False
 
 
 def switcher(request_dic):
