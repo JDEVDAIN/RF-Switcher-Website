@@ -7,7 +7,8 @@
 <h1>Lichter</h1>
 <form method="post" action="/">
     <table>
-        {% for switch in switches %}
+    {% for group_list in switches%}
+        {% for switch in group_list%}
             <tr>
                 <td class="bulb">
                     {% if switch.enabled %}<img src="../static/bulb_on.svg"/>{% elif not switch.enabled %}
@@ -22,6 +23,20 @@
                 </td>
             </tr>
         {% endfor %}
+    <tr class="spacer"></tr>
+    {% endfor %}
+    <tr>
+         <td class="bulb">
+                        <img src="../static/bulb_off.svg"/>
+                </td>
+                <td class="text">
+                   Alles aus
+                </td>
+                <td class="button">
+                    <input style="width: -webkit-fill-available !important;margin-left: 20px !important;margin-right: 20px !important;" type="submit" id="off" value="KILL" name="OFF">
+
+                </td>
+     </tr>
     </table>
 </form>
 </html>
