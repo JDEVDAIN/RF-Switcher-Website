@@ -1,25 +1,25 @@
 <!doctype html>
+<html>
 <link rel="stylesheet" href="../static/index.css">
 <link rel="icon" type="image/x-icon" href="../static/favicon.ico">
 <title>Lichter</title>
 
 
 <h1>Lichter</h1>
-<form method="post" action="/">
     <table>
     {% for group_list in switches%}
         {% for switch in group_list%}
             <tr>
                 <td class="bulb">
-                    {% if switch.enabled %}<img src="../static/bulb_on.svg"/>{% elif not switch.enabled %}
-                        <img src="../static/bulb_off.svg"/>{% endif %}
+                    {% if switch.enabled %}<img id="bulb_{{ switch.num }}" src="../static/bulb_on.svg"/>{% elif not switch.enabled %}
+                        <img id="bulb_{{ switch.num }}" src="../static/bulb_off.svg"/>{% endif %}
                 </td>
                 <td class="text">
                     {{ switch.id }} {{ switch.name }}
                 </td>
                 <td class="button">
-                    <input type="submit" id="on" value="ON" name="{{ switch.num }}"/>
-                    <input type="submit" id="off" value="OFF" name="{{ switch.num }}"/>
+                    <input type="button" id="on" value="ON" name="{{ switch.num }}" onclick="changeSwitchState(this);"/>
+                    <input type="button" id="off" value="OFF" name="{{ switch.num }}" onclick="changeSwitchState(this);"/>
                 </td>
             </tr>
         {% endfor %}
@@ -33,10 +33,28 @@
                    Alles aus
                 </td>
                 <td class="button">
-                    <input style="width: -webkit-fill-available !important;margin-left: 20px !important;margin-right: 20px !important;" type="submit" id="off" value="KILL" name="OFF">
+                    <input style="width: -webkit-fill-available !important;margin-left: 20px !important;margin-right: 20px !important;" type="button" id="off" value="KILL" name="OFF" onclick="changeSwitchState(this);">
 
                 </td>
      </tr>
     </table>
-</form>
+<script>
+    async function changeSwitchState(caller) {
+        const response = await fetch('/api/switches', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+            "name": caller.name,
+            "value": caller.value
+            }),
+        })
+
+        const switches = await response.json();
+        for(let light_switch of switches.switch_list){
+            document.getElementById("bulb_" + light_switch.num).src = light_switch.enabled ? "../static/bulb_on.svg" : "../static/bulb_off.svg";
+        }
+    }
+</script>
 </html>
