@@ -2,7 +2,8 @@ import os
 import Switch
 from flask import Flask, render_template, request
 import logging
-from Switches import Switch_list
+from Switches import SWITCH_LIST
+
 app = Flask(__name__)
 # https://forum.pimatic.org/topic/3337/433-mhz-funksteckdosen-lidl-silvercrest-rcr-dp3-3711-a-brennenstuhl-mit-homeduino
 # codes for the home funksender
@@ -19,7 +20,7 @@ app.logger.setLevel(logging.INFO)
 
 
 def find_switch(key):
-    for group_list in Switch_list:
+    for group_list in SWITCH_LIST:
         for e in group_list:
             if str(e.num) == key:
                 return e
@@ -39,7 +40,7 @@ def multi_switch_switcher(multi_switch, value):
     :param value: value of command (OFF;ON)
     :param multi_switch: MultiSwitches which control several devices
     """
-    for group_list in Switch_list:
+    for group_list in SWITCH_LIST:
         for switch in group_list:
             if switch.group == multi_switch.group:
                 if value == "ON":
@@ -49,7 +50,7 @@ def multi_switch_switcher(multi_switch, value):
 
 
 def kill_switch():
-    for group_list in Switch_list:
+    for group_list in SWITCH_LIST:
         # find multi switch and activate to deactivate group instead of disabling all
         # could be speed up; This iteration could be skipped if all multiswitches will get set at the end of a group
         # depending on the hardware

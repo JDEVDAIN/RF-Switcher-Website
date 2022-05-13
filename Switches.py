@@ -1,7 +1,8 @@
 import Switch
 
 #
-Switch_list = [
+SWITCH_LIST = [
+    # Switch    group, num, name, code_on, code_off, is_multiswitch
     [Switch.Switch(1, 1, "LED Schreibtisch", '7145473', '7145475'),
      Switch.Switch(1, 2, "Ecklampe", "1361", "1364"),
      Switch.Switch(1, 3, "Tischlampe", "4433", "4436")],
