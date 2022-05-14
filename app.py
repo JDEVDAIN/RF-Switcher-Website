@@ -1,7 +1,7 @@
 import json
-import os
 from flask import Flask, render_template, request
 import logging
+import subprocess
 from Switches import SWITCH_LIST
 
 app = Flask(__name__)
@@ -30,8 +30,10 @@ def find_switch(key):
 def rf_sender(code):
     # dev
     # print("DEBUG: CODE SEND: " + code)
-    os.system("./codesend " + code)
-    os.system("./codesend " + code)  # to make sure it worked
+    args_list = ["./codesend"]
+    args_list.extend(code.split())
+    subprocess.Popen(args_list)
+
 
 
 def multi_switch_switcher(multi_switch, value):
