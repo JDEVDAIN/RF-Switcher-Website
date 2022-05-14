@@ -32,8 +32,7 @@ def rf_sender(code):
     # print("DEBUG: CODE SEND: " + code)
     args_list = ["./codesend"]
     args_list.extend(code.split())
-    subprocess.Popen(args_list)
-
+    subprocess.call(args_list)
 
 
 def multi_switch_switcher(multi_switch, value):
