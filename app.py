@@ -1,7 +1,7 @@
 import json
-import os
 from flask import Flask, render_template, request
 import logging
+import subprocess
 from Switches import SWITCH_LIST
 
 app = Flask(__name__)
@@ -30,8 +30,10 @@ def find_switch(key):
 def rf_sender(code):
     # dev
     # print("DEBUG: CODE SEND: " + code)
-    os.system("./codesend " + code)
-    os.system("./codesend " + code)  # to make sure it worked
+    args_list = ["./codesend"]
+    args_list.extend(code.split())
+    subprocess.Popen(args_list)
+
 
 
 def multi_switch_switcher(multi_switch, value):
@@ -93,11 +95,11 @@ def switcherApi():
     if request.method == 'POST':  # maybe make two endpoints
         if request.is_json:
             changed_switch = request.get_json()
-            print(changed_switch)
+
             switcher(changed_switch["name"], changed_switch["value"])
             flat_switch_list = [switch for group_list in SWITCH_LIST for switch in group_list]
             json_switch_list = [switch.toSimpleJSON() for switch in flat_switch_list]
-            print(({'switch_list': json_switch_list}))
+
             return json.dumps({"switch_list": json_switch_list}, default=vars), 200, {'ContentType': 'application/json'}
 
 
