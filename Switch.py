@@ -1,8 +1,7 @@
 class Switch:
     enabled = False  # set enabled default to false
 
-    def __init__(self, group: int, num: int, name: str, code_on: str, code_off: str, is_multi_switch=False):
-        self.group = group
+    def __init__(self, num: int, name: str, code_on: str, code_off: str, is_multi_switch=False):
         self.num = num
         self.name = name
         self.code_on = code_on

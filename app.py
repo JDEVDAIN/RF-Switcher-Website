@@ -29,7 +29,7 @@ def find_switch(key):
 
 def rf_sender(code):
     # dev
-    # print("DEBUG: CODE SEND: " + code)
+    #print("DEBUG: CODE SEND: " + code)
     args_list = ["./codesend"]
     args_list.extend(code.split())
     subprocess.call(args_list)
@@ -42,8 +42,8 @@ def multi_switch_switcher(multi_switch, value):
     :param multi_switch: MultiSwitches which control several devices
     """
     for group_list in SWITCH_LIST:
-        for switch in group_list:
-            if switch.group == multi_switch.group:
+        if multi_switch in group_list:
+            for switch in group_list:
                 if value == "ON":
                     switch.enabled = True
                 elif value == "OFF":
