@@ -102,6 +102,11 @@ def switcherApi():
             return json.dumps({"switch_list": json_switch_list}, default=vars), 200, {'ContentType': 'application/json'}
 
 
+@app.route("/api/status/<string:switch_num>", methods=['GET'])
+def statusApi(switch_num):
+    is_switch_enabled = find_switch(switch_num).enabled
+    return json.dumps({"status": "ON" if is_switch_enabled else "OFF"})
+
 @app.route("/")
 def index():
     if request.method == 'GET':
