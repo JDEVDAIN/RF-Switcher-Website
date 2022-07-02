@@ -104,7 +104,10 @@ def switcherApi():
 
 @app.route("/api/status/<string:switch_num>", methods=['GET'])
 def statusApi(switch_num):
+    selected_switch = find_switch(switch_num)
     is_switch_enabled = find_switch(switch_num).enabled
+    # To make sure the light is always synced with the switch, send a rf request to be on the safe site
+    switcher(switch_num, "ON" if is_switch_enabled else "OFF")
     return json.dumps({"status": "ON" if is_switch_enabled else "OFF"})
 
 @app.route("/")
