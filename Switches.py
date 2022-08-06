@@ -4,6 +4,12 @@ import Switch
 SWITCH_LIST = [
     # Switch
     # number, name, code_on, code_off, is_multiswitch (optional)
+    # Brennstuhl elro_800_switch Switches Codes with groupcode 11111
+    # A 1361  1364
+    #B 4433  4436
+    #C 5201  5204
+    #D 5393  5396 
+
     [
         Switch.Switch(1, "LED Schreibtisch", '7145473', '7145475'),
         Switch.Switch(2, "Ecklampe", "1361", "1364"),
